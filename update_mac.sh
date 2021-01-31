@@ -7,6 +7,7 @@ macos_updates=$(softwareupdate -l)
 brew_outdated=$(brew outdated)
 mas_outdated=$(mas outdated)
 restart_yes_no=$(grep -o restart <<< "$macos_updates")
+show_awk_macos_updates=$(printf "%s\n" "$macos_updates" | awk 'NR>=5')
 devider() {
     printf "%s\n" '================================================================'
 }
@@ -75,7 +76,7 @@ else
 fi
 
 
-if [[ $macos_updates != "" ]]
+if [[ $show_awk_macos_updates != "" ]]
 then
     macos_updates2() {
         printf "%s\n" 'Updating MacOS System...'
@@ -84,7 +85,7 @@ then
     }
     show_mac_updates() {
         printf "%s\n\n" 'Available MacOS System Updates:'
-        printf "%s\n" "$macos_updates" | awk 'NR>=5'
+        printf "s\n" "$show_awk_macos_updates"
     }
 else
     macos_updates2() {
