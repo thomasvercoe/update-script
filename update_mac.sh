@@ -8,7 +8,7 @@ brew_outdated=$(brew outdated)
 mas_outdated=$(mas outdated)
 restart_yes_no=$(grep -o restart <<< "$macos_updates")
 show_awk_macos_updates=$(printf "%s\n" "$macos_updates" | awk 'NR>=5')
-devider() {
+divider() {
     printf "%s\n" '================================================================'
 }
 
@@ -99,13 +99,13 @@ fi
 
 
 
-devider
+divider
 show_mac_updates
-devider
+divider
 show_upgrades
-devider
+divider
 show_mas_updates
-devider
+divider
 
 
 
