@@ -41,10 +41,10 @@ else
     }
 fi
 
-#test if there are outdated Homebrew packages and if so brew_update will update homebrew and its packages and show_upgrades will display the relavent updates else brew_update will do nothing and show_upgrades will print that all packages are up to date
+#test if there are outdated Homebrew packages and if so do_brew_outdated will update homebrew and its packages and show_upgrades will display the relavent updates else do_brew_outdated will do nothing and show_upgrades will print that all packages are up to date
 if [[ $brew_outdated != "" ]]
 then
-    brew_update () {
+    do_brew_outdated () {
         printf "%s\n" 'Upgrading Homebrew Packages...'
         brew update
         brew upgrade
@@ -55,7 +55,7 @@ then
         printf "%s\n" "$brew_outdated"
     }
 else
-    brew_update () {
+    do_brew_outdated () {
         :
     }
     show_upgrades () {
@@ -63,10 +63,10 @@ else
     }
 fi
 
-#test if there are outdated Mac App Store app's and if so mas_outdated2 will update them and show_mas_updates will display the relavent updates else mas_outdated2 will do nothing and show_mas_updates will print that all app's are up to date
+#test if there are outdated Mac App Store app's and if so do_mas_outdated will update them and show_mas_updates will display the relavent updates else do_mas_outdated will do nothing and show_mas_updates will print that all app's are up to date
 if [[ $mas_outdated != "" ]]
 then 
-    mas_outdated2() {
+    do_mas_outdated() {
         printf "%s\n" 'Updating App Store Apps...'
         mas upgrade
         printf "%s\n" 'Updated App Store Apps'
@@ -76,7 +76,7 @@ then
         printf "%s\n" "$mas_outdated" | awk '{$1=""; print $0}'
     }
 else 
-    mas_outdated2() {
+    do_mas_outdated() {
         :
     }
     show_mas_updates() {
@@ -84,10 +84,10 @@ else
     }
 fi
 
-#tests if there are any MacOS system updates available and if so macos_updates2 will will run mupdate (function defined above) and show_mac_updates will display the relavent updates else macos_updates2 will do nothing and show_mac_updates will print that all the system up to date
+#tests if there are any MacOS system updates available and if so do_macos_updates will will run mupdate (function defined above) and show_mac_updates will display the relavent updates else do_macos_updates will do nothing and show_mac_updates will print that all the system up to date
 if [[ $show_awk_macos_updates != "" ]]
 then
-    macos_updates2() {
+    do_macos_updates() {
         printf "%s\n" 'Updating MacOS System...'
         mupdate
         printf "%s\n" 'Updated MacOS'
@@ -97,7 +97,7 @@ then
         printf "s\n" "$show_awk_macos_updates"
     }
 else
-    macos_updates2() {
+    do_macos_updates() {
         :
     }
     show_mac_updates() {
@@ -130,9 +130,9 @@ then
     if [[ $YESNO == y* ]]
     then 
         #runs the functions containing the commands to do the updates 
-        brew_update
-        mas_outdated2
-        macos_updates2
+        do_brew_outdated
+        do_mas_outdated
+        do_macos_updates
         printf "%s\n" 'Your system is up to date'
     else 
         printf "%s\n" 'Update Terminated'
