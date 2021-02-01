@@ -8,11 +8,11 @@ brew_outdated=$(brew outdated)
 mas_outdated=$(mas outdated)
 restart_yes_no=$(grep -o restart <<< "$macos_updates")
 show_awk_macos_updates=$(printf "%s\n" "$macos_updates" | awk 'NR>=5')
+ask_question=$(printf "%s\n" "$brew_outdated" "$mas_outdated" "$show_awk_macos_updates")
+
 divider() {
     printf "%s\n" '================================================================'
 }
-
-
 
 
 if [[ $restart_yes_no == restart ]]
@@ -110,14 +110,18 @@ divider
 
 
 
-yes_no_question
-read YESNO
-if [[ $YESNO == y* ]]
-then 
-    brew_update
-    mas_outdated2
-    macos_updates2
-    printf "%s\n" 'Your system is up to date'
-else 
-    printf "%s\n" 'Update Terminated'
+if  [[ $ask_question != "" ]]
+then
+    yes_no_question
+    read YESNO
+
+    if [[ $YESNO == y* ]]
+    then 
+        brew_update
+        mas_outdated2
+        macos_updates2
+        printf "%s\n" 'Your system is up to date'
+    else 
+        printf "%s\n" 'Update Terminated'
+    fi
 fi
