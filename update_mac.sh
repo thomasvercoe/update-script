@@ -41,7 +41,8 @@ else
     }
 fi
 
-#test if there are outdated Homebrew packages and if so do_brew_outdated will update homebrew and its packages and show_upgrades will display the relavent updates else do_brew_outdated will do nothing and show_upgrades will print that all packages are up to date
+# test if there are outdated Homebrew packages and if so do_brew_outdated will update homebrew and its packages and show_upgrades will display
+# the relavent updates else do_brew_outdated will do nothing and show_upgrades will print that all packages are up to date
 if [[ $brew_outdated != "" ]]
 then
     do_brew_outdated () {
@@ -63,7 +64,8 @@ else
     }
 fi
 
-#test if there are outdated Mac App Store app's and if so do_mas_outdated will update them and show_mas_updates will display the relavent updates else do_mas_outdated will do nothing and show_mas_updates will print that all app's are up to date
+# test if there are outdated Mac App Store app's and if so do_mas_outdated will update them and show_mas_updates will display
+# the relavent updates else do_mas_outdated will do nothing and show_mas_updates will print that all app's are up to date
 if [[ $mas_outdated != "" ]]
 then 
     do_mas_outdated() {
@@ -84,7 +86,9 @@ else
     }
 fi
 
-#tests if there are any MacOS system updates available and if so do_macos_updates will will run mupdate (function defined above) and show_mac_updates will display the relavent updates else do_macos_updates will do nothing and show_mac_updates will print that all the system up to date
+# tests if there are any MacOS system updates available and if so do_macos_updates will will run mupdate (function defined above)
+# and show_mac_updates will display the relavent updates else do_macos_updates will do nothing and show_mac_updates will print that
+# all the system up to date
 if [[ $show_awk_macos_updates != "" ]]
 then
     do_macos_updates() {
@@ -107,8 +111,8 @@ fi
 
 
 
-#where some of the functions containing printf come together
-#displays to the user the state of updates on the system
+# where some of the functions containing printf come together
+# displays to the user the state of updates on the system
 divider
 show_mac_updates
 divider
@@ -119,8 +123,8 @@ divider
 
 
 
-#where the rest of the functions defined above come together
-#tests if there are any updates and if so presents the question else it exits
+# where the rest of the functions defined above come together
+# tests if there are any updates and if so presents the question else it exits
 if  [[ $ask_question != "" ]]
 then
     #asks the user if they wwish to proceed
