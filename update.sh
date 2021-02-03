@@ -17,8 +17,6 @@ pip3_outdated=$(pip3 list --outdated)
 restart_yes_no=$(grep -o restart <<< "$macos_updates")
 # use awk to not display the first 5 lines of output from softwareupdate -l (they are not necessary to display)
 show_awk_macos_updates=$(printf "%s\n" "$macos_updates" | awk 'NR>=5')
-# 
-show_awk_pip3_outdated=$(printf "%s\n" "$pip3_outdated" | awk)
 # stores the output of all the commands used to list availible updates
 ask_question=$(printf "%s\n" "$brew_outdated" "$mas_outdated" "$show_awk_macos_updates")
 
