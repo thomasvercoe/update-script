@@ -1,26 +1,27 @@
 #! /bin/bash
 
-#make script case insensitive 
+# make script case insensitive 
 shopt -s nocasematch
 printf "%s\n" 'Searching for Updates...'
-#update homebrew to get updates for Homebrew packages
+# update homebrew to get updates for Homebrew packages
 brew update &> /dev/null
-#list available MacOS updates
+# list available MacOS updates
 macos_updates=$(softwareupdate -l)
-#list outdated Homebrew packages
+# list outdated Homebrew packages
 brew_outdated=$(brew outdated)
-#list outdated Mac App Store Apps 
+# list outdated Mac App Store Apps 
 mas_outdated=$(mas outdated)
-#list outdated python packages
-pip3_outdated=$(pip list --outdated)
-#grep $macos_updates for any entries mentioning 'restart'
+# list outdated python packages
+pip3_outdated=$(pip3 list --outdated)
+# grep $macos_updates for any entries mentioning 'restart'
 restart_yes_no=$(grep -o restart <<< "$macos_updates")
-#use awk to not display the first 5 lines of output from softwareupdate -l (they are not necessary to display)
+# use awk to not display the first 5 lines of output from softwareupdate -l (they are not necessary to display)
 show_awk_macos_updates=$(printf "%s\n" "$macos_updates" | awk 'NR>=5')
-
+# 
 show_awk_pip3_outdated=$(printf "%s\n" "$pip3_outdated" | awk)
 # stores the output of all the commands used to list availible updates
 ask_question=$(printf "%s\n" "$brew_outdated" "$mas_outdated" "$show_awk_macos_updates")
+
 
 # function to print 64 equals symbols
 divider() {
