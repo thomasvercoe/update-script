@@ -11,14 +11,18 @@ macos_updates=$(softwareupdate -l)
 brew_outdated=$(brew outdated)
 #list outdated Mac App Store Apps 
 mas_outdated=$(mas outdated)
+#list outdated python packages
+pip3_outdated=$(pip list --outdated)
 #grep $macos_updates for any entries mentioning 'restart'
 restart_yes_no=$(grep -o restart <<< "$macos_updates")
 #use awk to not display the first 5 lines of output from softwareupdate -l (they are not necessary to display)
 show_awk_macos_updates=$(printf "%s\n" "$macos_updates" | awk 'NR>=5')
-#stores the output of all the commands used to list availible updates
+
+show_awk_pip3_outdated=$(printf "%s\n" "$pip3_outdated" | awk)
+# stores the output of all the commands used to list availible updates
 ask_question=$(printf "%s\n" "$brew_outdated" "$mas_outdated" "$show_awk_macos_updates")
 
-#function to print 64 equals symbols
+# function to print 64 equals symbols
 divider() {
     printf "%s\n" '================================================================'
 }
@@ -98,7 +102,7 @@ then
     }
     show_mac_updates() {
         printf "%s\n\n" 'Available MacOS System Updates:'
-        printf "s\n" "$show_awk_macos_updates"
+        printf "%s\n" "$show_awk_macos_updates"
     }
 else
     do_macos_updates() {
