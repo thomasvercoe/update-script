@@ -26,6 +26,7 @@ divider() {
     printf "%s\n" '================================================================'
 }
 
+# some code from the internet, used to upgrade all installed pip packages
 pip3update() {
     pip3 list -o | cut -f1 -d' ' | tr " " "\n" | awk '{if(NR>=3)print}' | cut -d' ' -f1 | xargs -n1 pip3 install -U 
 }
@@ -169,9 +170,9 @@ then
     then 
         #runs the functions containing the commands to do the updates 
         do_brew_outdated
+        do_pip3_outdated
         do_mas_outdated
         do_macos_updates
-        do_pip3_outdated
         printf "%s\n" 'Your system is up to date'
     else 
         printf "%s\n" 'Update Terminated'
