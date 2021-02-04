@@ -26,6 +26,11 @@ divider() {
     printf "%s\n" '================================================================'
 }
 
+pip3update() {
+    pip3 list -o | cut -f1 -d' ' | tr " " "\n" | awk '{if(NR>=3)print}' | cut -d' ' -f1 | xargs -n1 pip3 install -U 
+}
+
+
 #test if an update requires a restart and if so then mupdate has --restart flag and yes_no_question alerts the user about the restart
 if [[ $restart_yes_no == restart ]]
 then 
@@ -50,7 +55,7 @@ if [[ $brew_outdated != "" ]]
 then
     do_brew_outdated () {
         printf "%s\n" 'Upgrading Homebrew Packages...'
-        brew update
+        brew update &> /dev/null
         brew upgrade
         printf "%s\n" 'Upgraded Homebrew Packages'
     }
@@ -113,15 +118,41 @@ else
 fi
 
 
+# test if there are outdated pip packages and if so do_pip3_outdated will update pip3 packages and show_pip3_updates will display
+# the relavent updates else do_pip3_outdated will do nothing and show_pip3_updates will print that all packages are up to date
+if [[ $pip3_outdated != "" ]]
+then
+    do_pip3_outdated () {
+        printf "%s\n" 'Upgrading pip3 Packages...'
+        pip3update
+        printf "%s\n" 'Upgraded pip3 Packages'
+    }
+    show_pip3_updates () {
+        printf "%s\n\n" 'Available pip3 Package Upgrades:'
+        printf "%s\n" "$pip3_outdated"
+    }
+else
+    do_pip3_outdated () {
+        :
+    }
+    show_pip3_updates () {
+        printf "%s\n" 'All pip3 packages are already upgraded'
+    }
+fi
+
+
+
 
 # where some of the functions containing printf come together
 # displays to the user the state of updates on the system
 divider
 show_mac_updates
 divider
-show_upgrades
-divider
 show_mas_updates
+divider
+show_pip3_updates
+divider
+show_upgrades
 divider
 
 
@@ -140,6 +171,7 @@ then
         do_brew_outdated
         do_mas_outdated
         do_macos_updates
+        do_pip3_outdated
         printf "%s\n" 'Your system is up to date'
     else 
         printf "%s\n" 'Update Terminated'
