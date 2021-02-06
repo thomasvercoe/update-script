@@ -8,8 +8,8 @@ Used to update or upgrade various software on MacOS, however should work wwith o
 
 Works with:
 
-	- Homebrew
-	- pip
-	- mas-cli
-	- softwareupdate
+- Homebrew
+- pip
+- mas-cli
+- softwareupdate
 
