@@ -4,7 +4,6 @@ Used to update or upgrade various software on MacOS, however should work with ot
 
 
 &nbsp;  
-&nbsp;  
 
 
 Works with:
