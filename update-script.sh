@@ -98,13 +98,17 @@ fi
 
 if command -v softwareupdate &> /dev/null
 then 
+    macos_updates_function () {
     # list available MacOS updates
     macos_updates=$(softwareupdate -l)
     # use awk to not display the first 5 lines of output from softwareupdate -l (they are not necessary to display)
     show_awk_macos_updates=$(printf "%s\n" "$macos_updates" | awk 'NR>=5')
     # grep $macos_updates for any entries mentioning 'restart'
     restart_yes_no=$(grep -o restart <<< "$macos_updates")
+    }
 
+    # softwareupdate -l has an annoying output when there are no updates available that dosen't go away when sent to /dev/null, however this works
+    macos_updates_function &> /dev/null
 
     #test if an update requires a restart and if so then mupdate has --restart flag and yes_no_question alerts the user about the restart
     if [[ $restart_yes_no == restart ]]
