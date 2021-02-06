@@ -10,21 +10,22 @@ divider() {
     printf "%s\n" '================================================================'
 }
 
+# defines the default behaviour of the yes_no_question function
 yes_no_question() {
     printf "%s\n" 'Do you wish to continue? [Yes/No]'
 }
 
 
 
+# test if homebrew is installed
 if command -v brew &> /dev/null
 then 
-    # update homebrew to get updates for Homebrew packages
+    # update homebrew to get updates for homebrew packages
     brew update &> /dev/null
-    # list outdated Homebrew packages
+
     brew_outdated=$(brew outdated)
 
-    # test if there are outdated Homebrew packages and if so do_brew_outdated will update homebrew and its packages and show_brew_upgrades will display
-    # the relavent updates else do_brew_outdated will do nothing and show_brew_upgrades will print that all packages are up to date
+    # test if there are outdated Homebrew packages
     if [[ $brew_outdated != "" ]]
     then
         do_brew_outdated () {
@@ -57,13 +58,12 @@ fi
 
 
 
+# test if mas-cli is installed
 if command -v mas &> /dev/null
 then 
-    # list outdated Mac App Store Apps 
     mas_outdated=$(mas outdated)
 
-    # test if there are outdated Mac App Store app's and if so do_mas_outdated will update them and show_mas_updates will display
-    # the relavent updates else do_mas_outdated will do nothing and show_mas_updates will print that all app's are up to date
+    # test if there are outdated Mac App Store app's
     if [[ $mas_outdated != "" ]]
     then 
         do_mas_outdated() {
@@ -73,6 +73,7 @@ then
         }
         show_mas_updates() {
             printf "%s\n\n" 'Available App Store Updates:'
+            # use awk to not display the first 5 lines of output from softwareupdate -l (they are not necessary to display)
             printf "%s\n" "$mas_outdated" | awk '{$1=""; print $0}'
             divider
         }
@@ -96,10 +97,10 @@ fi
 
 
 
+# test if softwareupdate installed (comes bundled with MacOS so also tests if the script is running on a mac)
 if command -v softwareupdate &> /dev/null
 then 
     macos_updates_function () {
-    # list available MacOS updates
     macos_updates=$(softwareupdate -l)
     # use awk to not display the first 5 lines of output from softwareupdate -l (they are not necessary to display)
     show_awk_macos_updates=$(printf "%s\n" "$macos_updates" | awk 'NR>=5')
@@ -110,7 +111,7 @@ then
     # softwareupdate -l has an annoying output when there are no updates available that dosen't go away when sent to /dev/null, however this works
     macos_updates_function &> /dev/null
 
-    #test if an update requires a restart and if so then mupdate has --restart flag and yes_no_question alerts the user about the restart
+    #test if an update requires a restart and if so then mupdate has --restart
     if [[ $restart_yes_no == restart ]]
     then 
         yes_no_question() {
@@ -127,9 +128,7 @@ then
 
 
 
-    # tests if there are any MacOS system updates available and if so do_macos_updates will will run mupdate (function defined above)
-    # and show_mac_updates will display the relavent updates else do_macos_updates will do nothing and show_mac_updates will print that
-    # all the system up to date
+    # tests if there are any MacOS system updates available
     if [[ $show_awk_macos_updates != "" ]]
     then
         do_macos_updates() {
@@ -161,19 +160,17 @@ else
 fi
 
 
-
+# tests if pip3 is installed
 if command -v pip3 &> /dev/null
 then
-    # list outdated python packages
     pip3_outdated=$(pip3 list --outdated)
 
-    # some code from the internet, used to upgrade all installed pip packages
+    # some code from the internet, used to upgrade all installed pip3 packages
     pip3update() {
         pip3 list -o | cut -f1 -d' ' | tr " " "\n" | awk '{if(NR>=3)print}' | cut -d' ' -f1 | xargs -n1 pip3 install -U 
     }
 
-    # test if there are outdated pip packages and if so do_pip3_outdated will update pip3 packages and show_pip3_updates will display
-    # the relavent updates else do_pip3_outdated will do nothing and show_pip3_updates will print that all packages are up to date
+    # test if there are outdated pip3 packages
     if [[ $pip3_outdated != "" ]]
     then
         do_pip3_outdated () {
@@ -206,7 +203,7 @@ fi
 
 
 
-# where some of the functions containing printf come together
+
 # displays to the user the state of updates on the system
 divider
 show_mac_updates
@@ -219,17 +216,18 @@ show_brew_upgrades
 # stores the output of all the commands used to list availible updates
 ask_question=$(printf "%s\n" "$brew_outdated" "$mas_outdated" "$show_awk_macos_updates" "$pip3_outdated")
 
-# where the rest of the functions defined above come together
-# tests if there are any updates and if so presents the question else it exits
+
+# tests if there are any updates
 if  [[ $ask_question != "" ]]
 then
-    #asks the user if they wwish to proceed
+    #asks the user if they wish to proceed
     yes_no_question
     read YESNO
 
+    # tests the users response
     if [[ $YESNO == y* ]]
     then 
-        #runs the functions containing the commands to do the updates 
+        #does the updating and upgrading
         do_brew_outdated
         do_pip3_outdated
         do_mas_outdated
