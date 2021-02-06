@@ -1,6 +1,6 @@
 # **update-script**
 
-Used to update or upgrade various software on MacOS, however should work with other *nix systems.
+Used to update or upgrade software on MacOS through various package managers, however should work with diminished functionality on other *nix systems.
 
 
 &nbsp;  
