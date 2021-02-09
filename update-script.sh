@@ -202,8 +202,6 @@ else
 fi
 
 
-
-
 # displays to the user the state of updates on the system
 divider
 show_mac_updates
@@ -218,7 +216,7 @@ ask_question=$(printf "%s\n" "$brew_outdated" "$mas_outdated" "$show_awk_macos_u
 
 
 # tests if there are any updates
-if  [[ $ask_question != "" ]]
+if  [[ $ask_question == "" ]]
 then
     #asks the user if they wish to proceed
     yes_no_question
@@ -227,11 +225,20 @@ then
     # tests the users response
     if [[ $YESNO == y* ]]
     then 
+        if [[ $restart_yes_no != restart ]] 
+        then 
+            sudo -k
+            printf "%s\n" "Please enter your [Password]"
+            sudo -v
+            while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+        fi
+
         #does the updating and upgrading
         do_brew_outdated
         do_pip3_outdated
         do_mas_outdated
         do_macos_updates
+        sudo -k
         printf "%s\n" 'Your system is up to date'
     else 
         printf "%s\n" 'Update Terminated'
