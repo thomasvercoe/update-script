@@ -225,11 +225,15 @@ then
     # tests the users response
     if [[ $YESNO == y* ]]
     then 
+        # tests if an update requires a restart
         if [[ $restart_yes_no == restart ]] 
-        then 
+        then
+            # clear cached sudo Password
             sudo -k
             printf "%s\n" "Please enter your [Password]"
+            # ask user for password
             sudo -v
+            # keepalive cached password
             while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
         fi
 
