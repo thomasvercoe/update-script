@@ -216,7 +216,7 @@ ask_question=$(printf "%s\n" "$brew_outdated" "$mas_outdated" "$show_awk_macos_u
 
 
 # tests if there are any updates
-if  [[ $ask_question == "" ]]
+if  [[ $ask_question != "" ]]
 then
     #asks the user if they wish to proceed
     yes_no_question
@@ -225,7 +225,7 @@ then
     # tests the users response
     if [[ $YESNO == y* ]]
     then 
-        if [[ $restart_yes_no != restart ]] 
+        if [[ $restart_yes_no == restart ]] 
         then 
             sudo -k
             printf "%s\n" "Please enter your [Password]"
