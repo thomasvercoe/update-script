@@ -122,7 +122,7 @@ then
         }
     else
         mupdate() {
-            softwareupdate -i -a --verbose
+            softwareupdate -i -r --verbose
         }
     fi
 
@@ -245,7 +245,7 @@ then
             fi
         else
             mupdate() {
-            softwareupdate -i -a --verbose
+            softwareupdate -i -r --verbose
             }
         fi
 
