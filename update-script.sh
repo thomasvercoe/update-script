@@ -114,8 +114,8 @@ then
     #test if an update requires a restart and if so then mupdate has --restart
     if [[ $restart_yes_no == restart ]]
     then 
-        yes_no_question() {
-        printf "%s\n" 'One or more of the updates available require a restart. Do you wish to continue? [Yes/No]'
+        yes_no_question_restart() {
+        printf "%s\n" 'One or more of the updates available require a restart. Do you wish to restart? [Yes/No]'
         }
         mupdate() {
             sudo softwareupdate -i -a --verbose --restart
@@ -225,16 +225,27 @@ then
     # tests the users response
     if [[ $YESNO == y* ]]
     then 
-        # tests if an update requires a restart
-        if [[ $restart_yes_no == restart ]] 
+
+        yes_no_question_restart
+        read restartyesno
+
+        if [[ $restartyesno == y* ]] 
         then
-            # clear cached sudo Password
-            sudo -k
-            printf "%s\n" "Please enter your [Password]"
-            # ask user for password
-            sudo -v
-            # keepalive cached password
-            while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+            # tests if an update requires a restart
+            if [[ $restart_yes_no == restart ]] 
+            then
+                # clear cached sudo Password
+                sudo -k
+                printf "%s\n" "Please enter your [Password]"
+                # ask user for password
+                sudo -v
+                # keepalive cached password
+                while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+            fi
+        else
+            mupdate() {
+            softwareupdate -i -a --verbose
+            }
         fi
 
         #does the updating and upgrading
