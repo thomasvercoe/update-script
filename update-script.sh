@@ -226,13 +226,14 @@ then
     if [[ $YESNO == y* ]]
     then 
 
-        yes_no_question_restart
-        read restartyesno
-
-        if [[ $restartyesno == y* ]] 
+        # tests if an update requires a restart
+        if [[ $restart_yes_no == restart ]] 
         then
-            # tests if an update requires a restart
-            if [[ $restart_yes_no == restart ]] 
+
+            yes_no_question_restart
+            read restartyesno
+
+            if [[ $restartyesno == y* ]] 
             then
                 # clear cached sudo Password
                 sudo -k
