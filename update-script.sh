@@ -242,6 +242,10 @@ then
                 sudo -v
                 # keepalive cached password
                 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+            else
+                mupdate() {
+                softwareupdate -i -r --verbose
+            }
             fi
         else
             mupdate() {
